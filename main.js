@@ -4,6 +4,24 @@ const FULL_HEART = '♥'
 
 // Your JavaScript code goes here!
 
+const err = document.getElementById('modal')
+err.classList.add('hidden')
+
+const likeButtons = document.getElementsByClassName('like-glyph')
+
+// likeButtons.forEach(like => console.log(like))
+// likeButtons.forEach(like => like.addEventListener('click', mimicServerCall))
+
+for(const like of likeButtons) {
+  like.addEventListener('click', fillHeartIfNoError)
+}
+
+function fillHeartIfNoError() {
+  mimicServerCall
+  if("Random server error. Try again.") {
+    console.log("this was an error")
+  }
+}
 
 
 
