@@ -5,25 +5,37 @@ const FULL_HEART = '♥'
 // Your JavaScript code goes here!
 
 const err = document.getElementById('modal')
+const errMsg = document.getElementById('modal-message')
 err.classList.add('hidden')
 
 const likeButtons = document.getElementsByClassName('like-glyph')
-
-// likeButtons.forEach(like => console.log(like))
-// likeButtons.forEach(like => like.addEventListener('click', mimicServerCall))
 
 for(const like of likeButtons) {
   like.addEventListener('click', fillHeartIfNoError)
 }
 
-function fillHeartIfNoError() {
-  mimicServerCall
-  if("Random server error. Try again.") {
-    console.log("this was an error")
-  }
+function fillHeartIfNoError(event) {
+  const heart = event.target
+  mimicServerCall()
+  .then( resp => fillHeart(heart) )
+  .catch( error => fiveSecondError(error) )
 }
 
+function fiveSecondError(error) {
+  err.classList.remove('hidden')
+  errMsg.innerHTML = `${error}`
+  setTimeout(function(){ err.classList.add('hidden') }, 5000)
+}
 
+function fillHeart(heart){
+  if (heart.innerText === EMPTY_HEART) {
+    heart.classList.add('activated-heart')
+    heart.innerText = FULL_HEART
+  } else {
+    heart.classList.remove('activated-heart')
+    heart.innerText = EMPTY_HEART
+  }
+}
 
 //------------------------------------------------------------------------------
 // Don't change the code below: this function mocks the server response
